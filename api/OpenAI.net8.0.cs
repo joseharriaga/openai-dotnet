@@ -6427,30 +6427,6 @@ namespace OpenAI.Responses {
         public static WebSearchTool CreateWebSearchTool(WebSearchToolLocation userLocation = null, WebSearchToolContextSize? searchContextSize = null, WebSearchToolFilters filters = null);
     }
     [Experimental("OPENAI001")]
-    public readonly partial struct ResponseToolKind : IEquatable<ResponseToolKind> {
-        public ResponseToolKind(string value);
-        public static ResponseToolKind ApplyPatch { get; }
-        public static ResponseToolKind CodeInterpreter { get; }
-        public static ResponseToolKind ComputerUsePreview { get; }
-        public static ResponseToolKind FileSearch { get; }
-        public static ResponseToolKind Function { get; }
-        public static ResponseToolKind ImageGeneration { get; }
-        public static ResponseToolKind LocalShell { get; }
-        public static ResponseToolKind Mcp { get; }
-        public static ResponseToolKind WebSearch { get; }
-        public static ResponseToolKind WebSearchPreview { get; }
-        public readonly bool Equals(ResponseToolKind other);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override readonly bool Equals(object obj);
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override readonly int GetHashCode();
-        public static bool operator ==(ResponseToolKind left, ResponseToolKind right);
-        public static implicit operator ResponseToolKind(string value);
-        public static implicit operator ResponseToolKind?(string value);
-        public static bool operator !=(ResponseToolKind left, ResponseToolKind right);
-        public override readonly string ToString();
-    }
-    [Experimental("OPENAI001")]
     public class ResponseToolChoice : IJsonModel<ResponseToolChoice>, IPersistableModel<ResponseToolChoice> {
         public string FunctionName { get; }
         public ResponseToolChoiceKind Kind { get; }
@@ -6473,6 +6449,30 @@ namespace OpenAI.Responses {
         FileSearch = 5,
         WebSearch = 6,
         Computer = 7
+    }
+    [Experimental("OPENAI001")]
+    public readonly partial struct ResponseToolKind : IEquatable<ResponseToolKind> {
+        public ResponseToolKind(string value);
+        public static ResponseToolKind ApplyPatch { get; }
+        public static ResponseToolKind CodeInterpreter { get; }
+        public static ResponseToolKind ComputerUsePreview { get; }
+        public static ResponseToolKind FileSearch { get; }
+        public static ResponseToolKind Function { get; }
+        public static ResponseToolKind ImageGeneration { get; }
+        public static ResponseToolKind LocalShell { get; }
+        public static ResponseToolKind Mcp { get; }
+        public static ResponseToolKind WebSearch { get; }
+        public static ResponseToolKind WebSearchPreview { get; }
+        public readonly bool Equals(ResponseToolKind other);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override readonly bool Equals(object obj);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override readonly int GetHashCode();
+        public static bool operator ==(ResponseToolKind left, ResponseToolKind right);
+        public static implicit operator ResponseToolKind(string value);
+        public static implicit operator ResponseToolKind?(string value);
+        public static bool operator !=(ResponseToolKind left, ResponseToolKind right);
+        public override readonly string ToString();
     }
     [Experimental("OPENAI001")]
     public readonly partial struct ResponseTruncationMode : IEquatable<ResponseTruncationMode> {

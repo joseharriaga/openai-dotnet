@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using OpenAI;
 
 namespace OpenAI.Responses
 {
@@ -25,6 +26,8 @@ namespace OpenAI.Responses
 
         public ResponseToolKind(string value)
         {
+            Argument.AssertNotNull(value, nameof(value));
+
             _value = value;
         }
 

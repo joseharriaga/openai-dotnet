@@ -5616,6 +5616,27 @@ namespace OpenAI.Responses {
         public static WebSearchPreviewTool CreateWebSearchPreviewTool(WebSearchToolLocation userLocation = null, WebSearchToolContextSize? searchContextSize = null);
         public static WebSearchTool CreateWebSearchTool(WebSearchToolLocation userLocation = null, WebSearchToolContextSize? searchContextSize = null, WebSearchToolFilters filters = null);
     }
+    public class ResponseToolChoice : IJsonModel<ResponseToolChoice>, IPersistableModel<ResponseToolChoice> {
+        public string FunctionName { get; }
+        public ResponseToolChoiceKind Kind { get; }
+        public static ResponseToolChoice CreateAutoChoice();
+        public static ResponseToolChoice CreateComputerChoice();
+        public static ResponseToolChoice CreateFileSearchChoice();
+        public static ResponseToolChoice CreateFunctionChoice(string functionName);
+        public static ResponseToolChoice CreateNoneChoice();
+        public static ResponseToolChoice CreateRequiredChoice();
+        public static ResponseToolChoice CreateWebSearchChoice();
+    }
+    public enum ResponseToolChoiceKind {
+        Unknown = 0,
+        Auto = 1,
+        None = 2,
+        Required = 3,
+        Function = 4,
+        FileSearch = 5,
+        WebSearch = 6,
+        Computer = 7
+    }
     public readonly partial struct ResponseToolKind : IEquatable<ResponseToolKind> {
         public ResponseToolKind(string value);
         public static ResponseToolKind ApplyPatch { get; }
@@ -5638,27 +5659,6 @@ namespace OpenAI.Responses {
         public static implicit operator ResponseToolKind?(string value);
         public static bool operator !=(ResponseToolKind left, ResponseToolKind right);
         public override readonly string ToString();
-    }
-    public class ResponseToolChoice : IJsonModel<ResponseToolChoice>, IPersistableModel<ResponseToolChoice> {
-        public string FunctionName { get; }
-        public ResponseToolChoiceKind Kind { get; }
-        public static ResponseToolChoice CreateAutoChoice();
-        public static ResponseToolChoice CreateComputerChoice();
-        public static ResponseToolChoice CreateFileSearchChoice();
-        public static ResponseToolChoice CreateFunctionChoice(string functionName);
-        public static ResponseToolChoice CreateNoneChoice();
-        public static ResponseToolChoice CreateRequiredChoice();
-        public static ResponseToolChoice CreateWebSearchChoice();
-    }
-    public enum ResponseToolChoiceKind {
-        Unknown = 0,
-        Auto = 1,
-        None = 2,
-        Required = 3,
-        Function = 4,
-        FileSearch = 5,
-        WebSearch = 6,
-        Computer = 7
     }
     public readonly partial struct ResponseTruncationMode : IEquatable<ResponseTruncationMode> {
         public ResponseTruncationMode(string value);
