@@ -115,6 +115,32 @@ public partial class ResponsesSmokeTests
     }
 
     [Test]
+    public void ExtendedResponseToolSerializationWorks()
+    {
+        ResponseTool bingGroundingTool = new MockBingGroundingTool(BinaryData.FromString("""
+            {
+                "connection_id": "/subscriptions/mock/resourceGroups/mock/providers/Microsoft.CognitiveServices/accounts/mock"
+            }
+            """));
+
+        CreateResponseOptions options = new()
+        {
+            Model = "gpt-4.1",
+            Instructions = "Use the mock Bing grounding tool."
+        };
+        options.Tools.Add(bingGroundingTool);
+
+        BinaryData serializedOptions = ModelReaderWriter.Write(options);
+
+        using JsonDocument document = JsonDocument.Parse(serializedOptions);
+        JsonElement serializedTool = document.RootElement.GetProperty("tools")[0];
+        Assert.That(serializedTool.GetProperty("type").GetString(), Is.EqualTo("bing_grounding"));
+        Assert.That(
+            serializedTool.GetProperty("bing_grounding").GetProperty("connection_id").GetString(),
+            Is.EqualTo("/subscriptions/mock/resourceGroups/mock/providers/Microsoft.CognitiveServices/accounts/mock"));
+    }
+
+    [Test]
     public void ContentPartSerialization()
     {
         AssertSerializationRoundTrip<ResponseContentPart>(
@@ -409,6 +435,26 @@ public partial class ResponsesSmokeTests
         BinaryData reserializedBytes = ModelReaderWriter.Write(deserializedValue);
         Assert.That(reserializedBytes.ToMemory().IsEmpty, Is.False);
         Assert.That(reserializedBytes.ToString(), Is.EqualTo(serializedJson));
+    }
+
+    private sealed class MockBingGroundingTool : ResponseTool
+    {
+        private readonly BinaryData _searchToolOptions;
+
+        public MockBingGroundingTool(BinaryData searchToolOptions)
+            : base(new ResponseToolKind("bing_grounding"))
+        {
+            _searchToolOptions = searchToolOptions;
+        }
+
+        protected override void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        {
+            base.JsonModelWriteCore(writer, options);
+            writer.WritePropertyName("bing_grounding"u8);
+
+            using JsonDocument document = JsonDocument.Parse(_searchToolOptions);
+            document.RootElement.WriteTo(writer);
+        }
     }
 
     [Test]
