@@ -55,7 +55,7 @@ namespace OpenAI.Responses;
 [CodeGenType("ToolChoiceObjectType")] internal readonly partial struct InternalToolChoiceObjectType {}
 [CodeGenType("ToolChoiceObjectWebSearch")] internal partial class InternalToolChoiceObjectWebSearch {}
 [CodeGenType("ToolChoiceOptions")] internal readonly partial struct InternalToolChoiceOptions {}
-[CodeGenType("ToolType")] internal readonly partial struct InternalToolType {}
+[CodeGenType("ToolType")] public readonly partial struct InternalToolType {}
 [CodeGenType("UnknownAnnotation")] internal partial class InternalUnknownAnnotation {}
 [CodeGenType("UnknownComputerAction")] internal partial class InternalUnknownComputerAction {}
 [CodeGenType("UnknownComputerToolCallOutputItemOutput")] internal partial class InternalUnknownComputerToolCallOutputItemOutput {}

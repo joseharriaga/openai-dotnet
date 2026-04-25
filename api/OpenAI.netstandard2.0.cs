@@ -5601,6 +5601,7 @@ namespace OpenAI.Responses {
         public int TotalTokenCount { get; set; }
     }
     public class ResponseTool : IJsonModel<ResponseTool>, IPersistableModel<ResponseTool> {
+        public InternalToolType Kind { get; }
         [Serialization.JsonIgnore]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ref JsonPatch Patch { get; }
@@ -5614,6 +5615,29 @@ namespace OpenAI.Responses {
         public static McpTool CreateMcpTool(string serverLabel, Uri serverUri, string authorizationToken = null, string serverDescription = null, IDictionary<string, string> headers = null, McpToolFilter allowedTools = null, McpToolCallApprovalPolicy toolCallApprovalPolicy = null);
         public static WebSearchPreviewTool CreateWebSearchPreviewTool(WebSearchToolLocation userLocation = null, WebSearchToolContextSize? searchContextSize = null);
         public static WebSearchTool CreateWebSearchTool(WebSearchToolLocation userLocation = null, WebSearchToolContextSize? searchContextSize = null, WebSearchToolFilters filters = null);
+    }
+    public readonly partial struct InternalToolType : IEquatable<InternalToolType> {
+        public InternalToolType(string value);
+        public static InternalToolType ApplyPatch { get; }
+        public static InternalToolType CodeInterpreter { get; }
+        public static InternalToolType ComputerUsePreview { get; }
+        public static InternalToolType FileSearch { get; }
+        public static InternalToolType Function { get; }
+        public static InternalToolType ImageGeneration { get; }
+        public static InternalToolType LocalShell { get; }
+        public static InternalToolType Mcp { get; }
+        public static InternalToolType WebSearch { get; }
+        public static InternalToolType WebSearchPreview { get; }
+        public readonly bool Equals(InternalToolType other);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override readonly bool Equals(object obj);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override readonly int GetHashCode();
+        public static bool operator ==(InternalToolType left, InternalToolType right);
+        public static implicit operator InternalToolType(string value);
+        public static implicit operator InternalToolType?(string value);
+        public static bool operator !=(InternalToolType left, InternalToolType right);
+        public override readonly string ToString();
     }
     public class ResponseToolChoice : IJsonModel<ResponseToolChoice>, IPersistableModel<ResponseToolChoice> {
         public string FunctionName { get; }
