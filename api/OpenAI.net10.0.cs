@@ -6409,7 +6409,7 @@ namespace OpenAI.Responses {
     }
     [Experimental("OPENAI001")]
     public class ResponseTool : IJsonModel<ResponseTool>, IPersistableModel<ResponseTool> {
-        public InternalToolType Kind { get; }
+        public ResponseToolKind Kind { get; }
         [Serialization.JsonIgnore]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Experimental("SCME0001")]
@@ -6427,27 +6427,27 @@ namespace OpenAI.Responses {
         public static WebSearchTool CreateWebSearchTool(WebSearchToolLocation userLocation = null, WebSearchToolContextSize? searchContextSize = null, WebSearchToolFilters filters = null);
     }
     [Experimental("OPENAI001")]
-    public readonly partial struct InternalToolType : IEquatable<InternalToolType> {
-        public InternalToolType(string value);
-        public static InternalToolType ApplyPatch { get; }
-        public static InternalToolType CodeInterpreter { get; }
-        public static InternalToolType ComputerUsePreview { get; }
-        public static InternalToolType FileSearch { get; }
-        public static InternalToolType Function { get; }
-        public static InternalToolType ImageGeneration { get; }
-        public static InternalToolType LocalShell { get; }
-        public static InternalToolType Mcp { get; }
-        public static InternalToolType WebSearch { get; }
-        public static InternalToolType WebSearchPreview { get; }
-        public readonly bool Equals(InternalToolType other);
+    public readonly partial struct ResponseToolKind : IEquatable<ResponseToolKind> {
+        public ResponseToolKind(string value);
+        public static ResponseToolKind ApplyPatch { get; }
+        public static ResponseToolKind CodeInterpreter { get; }
+        public static ResponseToolKind ComputerUsePreview { get; }
+        public static ResponseToolKind FileSearch { get; }
+        public static ResponseToolKind Function { get; }
+        public static ResponseToolKind ImageGeneration { get; }
+        public static ResponseToolKind LocalShell { get; }
+        public static ResponseToolKind Mcp { get; }
+        public static ResponseToolKind WebSearch { get; }
+        public static ResponseToolKind WebSearchPreview { get; }
+        public readonly bool Equals(ResponseToolKind other);
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override readonly bool Equals(object obj);
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override readonly int GetHashCode();
-        public static bool operator ==(InternalToolType left, InternalToolType right);
-        public static implicit operator InternalToolType(string value);
-        public static implicit operator InternalToolType?(string value);
-        public static bool operator !=(InternalToolType left, InternalToolType right);
+        public static bool operator ==(ResponseToolKind left, ResponseToolKind right);
+        public static implicit operator ResponseToolKind(string value);
+        public static implicit operator ResponseToolKind?(string value);
+        public static bool operator !=(ResponseToolKind left, ResponseToolKind right);
         public override readonly string ToString();
     }
     [Experimental("OPENAI001")]
