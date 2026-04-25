@@ -5948,6 +5948,7 @@ namespace OpenAI.Responses {
         public int OutputIndex { get; set; }
     }
     public class UnknownTool : ResponseTool, IJsonModel<ResponseTool>, IPersistableModel<ResponseTool> {
+        public UnknownTool(ResponseToolKind kind);
     }
     public class UriCitationMessageAnnotation : ResponseMessageAnnotation, IJsonModel<UriCitationMessageAnnotation>, IPersistableModel<UriCitationMessageAnnotation> {
         public UriCitationMessageAnnotation(Uri uri, int startIndex, int endIndex, string title);
