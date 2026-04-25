@@ -5600,6 +5600,7 @@ namespace OpenAI.Responses {
         public ref JsonPatch Patch { get; }
         public int TotalTokenCount { get; set; }
     }
+    [PersistableModelProxy(typeof(UnknownTool))]
     public class ResponseTool : IJsonModel<ResponseTool>, IPersistableModel<ResponseTool> {
         public ResponseToolKind Kind { get; }
         [Serialization.JsonIgnore]
@@ -5945,6 +5946,8 @@ namespace OpenAI.Responses {
         public StreamingResponseWebSearchCallSearchingUpdate();
         public string ItemId { get; set; }
         public int OutputIndex { get; set; }
+    }
+    public class UnknownTool : ResponseTool, IJsonModel<ResponseTool>, IPersistableModel<ResponseTool> {
     }
     public class UriCitationMessageAnnotation : ResponseMessageAnnotation, IJsonModel<UriCitationMessageAnnotation>, IPersistableModel<UriCitationMessageAnnotation> {
         public UriCitationMessageAnnotation(Uri uri, int startIndex, int endIndex, string title);
