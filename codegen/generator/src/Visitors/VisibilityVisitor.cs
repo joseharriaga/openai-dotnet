@@ -127,6 +127,7 @@ public class VisibilityVisitor : ScmLibraryVisitor
             null => null,
             "0" => MethodSignatureModifiers.Internal,
             "1" => MethodSignatureModifiers.Public,
+            "2" => MethodSignatureModifiers.Protected | MethodSignatureModifiers.Internal,
             _ => throw new NotImplementedException(),
         };
 
@@ -171,6 +172,7 @@ public class VisibilityVisitor : ScmLibraryVisitor
         {
             MethodSignatureModifiers.Public => originalModifiers & ~MethodSignatureModifiers.Internal & ~MethodSignatureModifiers.Private | MethodSignatureModifiers.Public,
             MethodSignatureModifiers.Internal => originalModifiers & ~MethodSignatureModifiers.Public & ~MethodSignatureModifiers.Private | MethodSignatureModifiers.Internal,
+            MethodSignatureModifiers.Protected | MethodSignatureModifiers.Internal => originalModifiers & ~MethodSignatureModifiers.Public & ~MethodSignatureModifiers.Private | MethodSignatureModifiers.Protected | MethodSignatureModifiers.Internal,
             _ => throw new NotImplementedException()
         };
 
