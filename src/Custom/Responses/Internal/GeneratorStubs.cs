@@ -67,7 +67,6 @@ namespace OpenAI.Responses;
 [CodeGenType("UnknownResponsesMessageItemResource")] internal partial class InternalUnknownResponsesMessageItemResource {}
 [CodeGenType("UnknownResponseStreamEvent")] internal partial class UnknownResponseStreamEvent {}
 [CodeGenType("UnknownResponseTextFormatConfiguration")] internal partial class InternalUnknownResponseTextFormatConfiguration {}
-[CodeGenType("UnknownTool")] internal partial class InternalUnknownTool {}
 [CodeGenType("UnknownToolChoiceObject")] internal partial class InternalUnknownToolChoiceObject {}
 [CodeGenType("CodeInterpreterToolOutputType")] internal readonly partial struct InternalCodeInterpreterToolOutputType {}
 [CodeGenType("LocalShellToolCallItemResourceStatus")] internal readonly partial struct InternalLocalShellToolCallItemResourceStatus {}

@@ -111,7 +111,7 @@ public partial class ResponsesSmokeTests
         Assert.That(
             ModelReaderWriter.Read<ResponseTool>(
                 BinaryData.FromString(@"{""type"": ""something_else""}")),
-            Is.InstanceOf<ResponseTool>());
+            Is.InstanceOf<UnknownTool>());
     }
 
     [Test]
