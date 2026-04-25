@@ -6814,7 +6814,7 @@ namespace OpenAI.Responses {
     }
     [Experimental("OPENAI001")]
     public class UnknownTool : ResponseTool, IJsonModel<ResponseTool>, IPersistableModel<ResponseTool> {
-        public UnknownTool(ResponseToolKind kind);
+        public UnknownTool(ResponseToolKind kind) : base(default);
     }
     [Experimental("OPENAI001")]
     public class UriCitationMessageAnnotation : ResponseMessageAnnotation, IJsonModel<UriCitationMessageAnnotation>, IPersistableModel<UriCitationMessageAnnotation> {
