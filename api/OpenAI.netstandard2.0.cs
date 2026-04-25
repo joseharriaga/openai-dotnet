@@ -5601,6 +5601,7 @@ namespace OpenAI.Responses {
         public int TotalTokenCount { get; set; }
     }
     public class ResponseTool : IJsonModel<ResponseTool>, IPersistableModel<ResponseTool> {
+        public ResponseToolKind Kind { get; }
         [Serialization.JsonIgnore]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ref JsonPatch Patch { get; }
@@ -5635,6 +5636,29 @@ namespace OpenAI.Responses {
         FileSearch = 5,
         WebSearch = 6,
         Computer = 7
+    }
+    public readonly partial struct ResponseToolKind : IEquatable<ResponseToolKind> {
+        public ResponseToolKind(string value);
+        public static ResponseToolKind ApplyPatch { get; }
+        public static ResponseToolKind CodeInterpreter { get; }
+        public static ResponseToolKind ComputerUsePreview { get; }
+        public static ResponseToolKind FileSearch { get; }
+        public static ResponseToolKind Function { get; }
+        public static ResponseToolKind ImageGeneration { get; }
+        public static ResponseToolKind LocalShell { get; }
+        public static ResponseToolKind Mcp { get; }
+        public static ResponseToolKind WebSearch { get; }
+        public static ResponseToolKind WebSearchPreview { get; }
+        public readonly bool Equals(ResponseToolKind other);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override readonly bool Equals(object obj);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override readonly int GetHashCode();
+        public static bool operator ==(ResponseToolKind left, ResponseToolKind right);
+        public static implicit operator ResponseToolKind(string value);
+        public static implicit operator ResponseToolKind?(string value);
+        public static bool operator !=(ResponseToolKind left, ResponseToolKind right);
+        public override readonly string ToString();
     }
     public readonly partial struct ResponseTruncationMode : IEquatable<ResponseTruncationMode> {
         public ResponseTruncationMode(string value);
