@@ -9,7 +9,7 @@ using OpenAI;
 
 namespace OpenAI.Responses
 {
-    [PersistableModelProxy(typeof(InternalUnknownTool))]
+    [PersistableModelProxy(typeof(UnknownTool))]
     public partial class ResponseTool : IJsonModel<ResponseTool>
     {
         internal ResponseTool()
@@ -125,7 +125,7 @@ namespace OpenAI.Responses
                         return ApplyPatchTool.DeserializeApplyPatchTool(element, data, options);
                 }
             }
-            return InternalUnknownTool.DeserializeInternalUnknownTool(element, data, options);
+            return UnknownTool.DeserializeUnknownTool(element, data, options);
         }
     }
 }

@@ -456,7 +456,7 @@ namespace OpenAI
 
         public static ResponseTool ResponseTool(string kind = default)
         {
-            return new InternalUnknownTool(new ResponseToolKind(kind), default);
+            return new UnknownTool(new ResponseToolKind(kind), default);
         }
 
         public static FunctionTool FunctionTool(string functionName = default, string functionDescription = default, BinaryData functionParameters = default, bool? strictModeEnabled = default)

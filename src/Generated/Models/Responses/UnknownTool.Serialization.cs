@@ -10,9 +10,9 @@ using OpenAI;
 
 namespace OpenAI.Responses
 {
-    internal partial class InternalUnknownTool : ResponseTool, IJsonModel<ResponseTool>
+    public partial class UnknownTool : ResponseTool, IJsonModel<ResponseTool>
     {
-        internal InternalUnknownTool() : this(default, default)
+        internal UnknownTool() : this(default, default)
         {
         }
 
@@ -91,7 +91,7 @@ namespace OpenAI.Responses
             return DeserializeResponseTool(document.RootElement, null, options);
         }
 
-        internal static InternalUnknownTool DeserializeInternalUnknownTool(JsonElement element, BinaryData data, ModelReaderWriterOptions options)
+        internal static UnknownTool DeserializeUnknownTool(JsonElement element, BinaryData data, ModelReaderWriterOptions options)
         {
             if (element.ValueKind == JsonValueKind.Null)
             {
@@ -110,7 +110,7 @@ namespace OpenAI.Responses
                 }
                 patch.Set([.. "$."u8, .. Encoding.UTF8.GetBytes(prop.Name)], prop.Value.GetUtf8Bytes());
             }
-            return new InternalUnknownTool(kind, patch);
+            return new UnknownTool(kind, patch);
         }
     }
 }

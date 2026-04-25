@@ -3,13 +3,15 @@
 #nullable disable
 
 using System.ClientModel.Primitives;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OpenAI.Responses
 {
-    internal partial class InternalUnknownTool : ResponseTool
+    [Experimental("OPENAI001")]
+    public partial class UnknownTool : ResponseTool
     {
 #pragma warning disable SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
-        internal InternalUnknownTool(ResponseToolKind kind, in JsonPatch patch) : base(kind != default ? kind : "unknown", patch)
+        internal UnknownTool(ResponseToolKind kind, in JsonPatch patch) : base(kind != default ? kind : "unknown", patch)
         {
         }
 #pragma warning restore SCME0001 // Type is for evaluation purposes only and is subject to change or removal in future updates.
