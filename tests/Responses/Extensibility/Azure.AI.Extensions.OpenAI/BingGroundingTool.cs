@@ -39,7 +39,7 @@ public partial class BingGroundingTool : ResponseTool, IJsonModel<BingGroundingT
 
 
     /// <summary> Initializes a new instance of <see cref="BingGroundingTool"/> for deserialization. </summary>
-    internal BingGroundingTool()
+    internal BingGroundingTool() : base(ResponseToolKindExtensions.BingGrounding())
     {
     }
 
