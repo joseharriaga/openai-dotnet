@@ -16,63 +16,13 @@ public partial class ResponsesExtensibilityTests
     [Test]
     public void AzureBingGroundingToolUsesAzureToolAdapterExperience()
     {
-        ResponseResult response = ReadResponseWithFunctionAndBingGroundingTools();
-        FunctionTool functionTool = AssertNativeFunctionToolExperience(response.Tools[0]);
-        BinaryData bingGroundingJson = AssertUnknownBingGroundingResponseTool(response.Tools[1]);
+        ResponseResult response = ModelReaderWriter.Read<ResponseResult>(ResponseWithFunctionAndBingGroundingTools);
 
-        AzureResponsesTool azureTool = ModelReaderWriter.Read<AzureResponsesTool>(
-            bingGroundingJson,
-            ModelSerializationExtensions.WireOptions,
-            AzureAIExtensionsOpenAIContext.Default);
-        BingGroundingAzureTool bingGroundingTool = (BingGroundingAzureTool)azureTool;
-        AssertBingGroundingOptions(bingGroundingTool.BingGroundingOptions);
-
-        CreateResponseOptions options = new();
-        options.Tools.Add(functionTool);
-        options.Tools.Add(bingGroundingTool);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(options.Tools[0], Is.SameAs(functionTool));
-            Assert.That(options.Tools[1], Is.InstanceOf<UnknownTool>());
-            Assert.That(options.Tools[1].Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
-        });
-    }
-
-    [Test]
-    public void DirectBingGroundingToolFeelsLikeNativeResponseToolExperience()
-    {
-        ResponseResult response = ReadResponseWithFunctionAndBingGroundingTools();
-        FunctionTool functionTool = AssertNativeFunctionToolExperience(response.Tools[0]);
-        BinaryData bingGroundingJson = AssertUnknownBingGroundingResponseTool(response.Tools[1]);
-
-        BingGroundingTool bingGroundingTool = ModelReaderWriter.Read<BingGroundingTool>(
-            bingGroundingJson,
-            ModelSerializationExtensions.WireOptions,
-            AzureAIExtensionsOpenAIContext.Default);
-        AssertBingGroundingOptions(bingGroundingTool.BingGroundingOptions);
-
-        CreateResponseOptions options = new();
-        options.Tools.Add(functionTool);
-        options.Tools.Add(bingGroundingTool);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(options.Tools[0], Is.SameAs(functionTool));
-            Assert.That(options.Tools[1], Is.SameAs(bingGroundingTool));
-            Assert.That(options.Tools[1].Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
-        });
-    }
-
-    private static ResponseResult ReadResponseWithFunctionAndBingGroundingTools()
-        => ModelReaderWriter.Read<ResponseResult>(ResponseWithFunctionAndBingGroundingTools);
-
-    private static FunctionTool AssertNativeFunctionToolExperience(ResponseTool tool)
-    {
-        FunctionTool functionTool = (FunctionTool)tool;
-
+        FunctionTool functionTool = (FunctionTool)response.Tools[0];
         using JsonDocument parameters = JsonDocument.Parse(functionTool.FunctionParameters.ToString());
         JsonElement root = parameters.RootElement;
+
+        ResponseTool bingGroundingResponseTool = response.Tools[1];
 
         Assert.Multiple(() =>
         {
@@ -83,26 +33,21 @@ public partial class ResponsesExtensibilityTests
             Assert.That(root.GetProperty("type").GetString(), Is.EqualTo("object"));
             Assert.That(root.GetProperty("properties").TryGetProperty("location", out _), Is.True);
             Assert.That(root.GetProperty("required").EnumerateArray().Select(item => item.GetString()), Does.Contain("location"));
+            Assert.That(bingGroundingResponseTool, Is.InstanceOf<UnknownTool>());
+            Assert.That(bingGroundingResponseTool.Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
         });
 
-        return functionTool;
-    }
+        AzureResponsesTool azureTool = ModelReaderWriter.Read<AzureResponsesTool>(
+            bingGroundingResponseTool.Patch.GetJson("$."u8),
+            ModelSerializationExtensions.WireOptions,
+            AzureAIExtensionsOpenAIContext.Default);
+        BingGroundingAzureTool bingGroundingTool = (BingGroundingAzureTool)azureTool;
+        Assert.That(bingGroundingTool.BingGroundingOptions.SearchConfigurations, Has.Count.EqualTo(1));
+        BingGroundingSearchConfiguration searchConfiguration = bingGroundingTool.BingGroundingOptions.SearchConfigurations[0];
 
-    private static BinaryData AssertUnknownBingGroundingResponseTool(ResponseTool tool)
-    {
-        Assert.Multiple(() =>
-        {
-            Assert.That(tool, Is.InstanceOf<UnknownTool>());
-            Assert.That(tool.Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
-        });
-
-        return tool.Patch.GetJson("$."u8);
-    }
-
-    private static void AssertBingGroundingOptions(BingGroundingOptions options)
-    {
-        Assert.That(options.SearchConfigurations, Has.Count.EqualTo(1));
-        BingGroundingSearchConfiguration searchConfiguration = options.SearchConfigurations[0];
+        CreateResponseOptions options = new();
+        options.Tools.Add(functionTool);
+        options.Tools.Add(bingGroundingTool);
 
         Assert.Multiple(() =>
         {
@@ -111,6 +56,57 @@ public partial class ResponsesExtensibilityTests
             Assert.That(searchConfiguration.Market, Is.EqualTo("en-US"));
             Assert.That(searchConfiguration.SetLang, Is.EqualTo("en"));
             Assert.That(searchConfiguration.Freshness, Is.EqualTo("7d"));
+            Assert.That(options.Tools[0], Is.SameAs(functionTool));
+            Assert.That(options.Tools[1], Is.InstanceOf<UnknownTool>());
+            Assert.That(options.Tools[1].Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
+        });
+    }
+
+    [Test]
+    public void DirectBingGroundingToolFeelsLikeNativeResponseToolExperience()
+    {
+        ResponseResult response = ModelReaderWriter.Read<ResponseResult>(ResponseWithFunctionAndBingGroundingTools);
+
+        FunctionTool functionTool = (FunctionTool)response.Tools[0];
+        using JsonDocument parameters = JsonDocument.Parse(functionTool.FunctionParameters.ToString());
+        JsonElement root = parameters.RootElement;
+
+        ResponseTool bingGroundingResponseTool = response.Tools[1];
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(functionTool.Kind, Is.EqualTo(ResponseToolKind.Function));
+            Assert.That(functionTool.FunctionName, Is.EqualTo("get_weather_at_location"));
+            Assert.That(functionTool.FunctionDescription, Is.EqualTo("Gets the weather at a specified location, optionally specifying units for temperature"));
+            Assert.That(functionTool.StrictModeEnabled, Is.False);
+            Assert.That(root.GetProperty("type").GetString(), Is.EqualTo("object"));
+            Assert.That(root.GetProperty("properties").TryGetProperty("location", out _), Is.True);
+            Assert.That(root.GetProperty("required").EnumerateArray().Select(item => item.GetString()), Does.Contain("location"));
+            Assert.That(bingGroundingResponseTool, Is.InstanceOf<UnknownTool>());
+            Assert.That(bingGroundingResponseTool.Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
+        });
+
+        BingGroundingTool bingGroundingTool = ModelReaderWriter.Read<BingGroundingTool>(
+            bingGroundingResponseTool.Patch.GetJson("$."u8),
+            ModelSerializationExtensions.WireOptions,
+            AzureAIExtensionsOpenAIContext.Default);
+        Assert.That(bingGroundingTool.BingGroundingOptions.SearchConfigurations, Has.Count.EqualTo(1));
+        BingGroundingSearchConfiguration searchConfiguration = bingGroundingTool.BingGroundingOptions.SearchConfigurations[0];
+
+        CreateResponseOptions options = new();
+        options.Tools.Add(functionTool);
+        options.Tools.Add(bingGroundingTool);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(searchConfiguration.ProjectConnectionId, Is.EqualTo("bing-project-connection-id"));
+            Assert.That(searchConfiguration.Count, Is.EqualTo(7));
+            Assert.That(searchConfiguration.Market, Is.EqualTo("en-US"));
+            Assert.That(searchConfiguration.SetLang, Is.EqualTo("en"));
+            Assert.That(searchConfiguration.Freshness, Is.EqualTo("7d"));
+            Assert.That(options.Tools[0], Is.SameAs(functionTool));
+            Assert.That(options.Tools[1], Is.SameAs(bingGroundingTool));
+            Assert.That(options.Tools[1].Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
         });
     }
 
