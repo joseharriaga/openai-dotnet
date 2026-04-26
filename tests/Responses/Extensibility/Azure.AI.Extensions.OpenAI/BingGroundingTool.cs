@@ -20,7 +20,7 @@ public partial class BingGroundingTool : ResponseTool, IJsonModel<BingGroundingT
     }
 
     /// <summary> Initializes a new instance of <see cref="BingGroundingTool"/>. </summary>
-    /// <param name="type"></param>
+    /// <param name="type"> The response tool kind representing the tool type. </param>
     /// <param name="additionalBinaryDataProperties"> Keeps track of any properties unknown to the library. </param>
     /// <param name="bingGrounding"> The bing grounding search tool parameters. </param>
     internal BingGroundingTool(ResponseToolKind @type, IDictionary<string, BinaryData> additionalBinaryDataProperties, BingGroundingOptions bingGrounding) : base(@type)
