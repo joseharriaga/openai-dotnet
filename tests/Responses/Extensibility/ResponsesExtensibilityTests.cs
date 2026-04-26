@@ -19,10 +19,10 @@ public partial class ResponsesExtensibilityTests
         ResponseResult response = ModelReaderWriter.Read<ResponseResult>(ResponseWithFunctionAndBingGroundingTools);
 
         FunctionTool functionTool = (FunctionTool)response.Tools[0];
+        ResponseTool bingGroundingResponseTool = response.Tools[1];
+
         using JsonDocument parameters = JsonDocument.Parse(functionTool.FunctionParameters.ToString());
         JsonElement root = parameters.RootElement;
-
-        ResponseTool bingGroundingResponseTool = response.Tools[1];
 
         Assert.Multiple(() =>
         {
@@ -68,10 +68,10 @@ public partial class ResponsesExtensibilityTests
         ResponseResult response = ModelReaderWriter.Read<ResponseResult>(ResponseWithFunctionAndBingGroundingTools);
 
         FunctionTool functionTool = (FunctionTool)response.Tools[0];
+        ResponseTool bingGroundingResponseTool = response.Tools[1];
+
         using JsonDocument parameters = JsonDocument.Parse(functionTool.FunctionParameters.ToString());
         JsonElement root = parameters.RootElement;
-
-        ResponseTool bingGroundingResponseTool = response.Tools[1];
 
         Assert.Multiple(() =>
         {
