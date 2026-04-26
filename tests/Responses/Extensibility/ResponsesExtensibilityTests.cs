@@ -106,7 +106,7 @@ public partial class ResponsesExtensibilityTests
 
         Assert.Multiple(() =>
         {
-            Assert.That(searchConfiguration.ProjectConnectionId, Is.EqualTo("'$BING_PROJECT_CONNECTION_ID'"));
+            Assert.That(searchConfiguration.ProjectConnectionId, Is.EqualTo("bing-project-connection-id"));
             Assert.That(searchConfiguration.Count, Is.EqualTo(7));
             Assert.That(searchConfiguration.Market, Is.EqualTo("en-US"));
             Assert.That(searchConfiguration.SetLang, Is.EqualTo("en"));
@@ -192,7 +192,7 @@ public partial class ResponsesExtensibilityTests
                "bing_grounding": {
                  "search_configurations": [
                    {
-                     "project_connection_id": "'$BING_PROJECT_CONNECTION_ID'",
+                     "project_connection_id": "bing-project-connection-id",
                      "count": 7,
                      "market": "en-US",
                      "set_lang": "en",
