@@ -12,7 +12,7 @@ public partial class BingGroundingTool : ResponseTool, IJsonModel<BingGroundingT
     /// <summary> Initializes a new instance of <see cref="BingGroundingTool"/>. </summary>
     /// <param name="bingGrounding"> The bing grounding search tool parameters. </param>
     /// <exception cref="ArgumentNullException"> <paramref name="bingGrounding"/> is null. </exception>
-    public BingGroundingTool(BingGroundingOptions bingGrounding) : base(ResponseToolKindExtensions.BingGrounding())
+    public BingGroundingTool(BingGroundingOptions bingGrounding) : base(ResponseToolKind.BingGrounding())
     {
         Argument.AssertNotNull(bingGrounding, nameof(bingGrounding));
 
@@ -39,7 +39,7 @@ public partial class BingGroundingTool : ResponseTool, IJsonModel<BingGroundingT
 
 
     /// <summary> Initializes a new instance of <see cref="BingGroundingTool"/> for deserialization. </summary>
-    internal BingGroundingTool() : base(ResponseToolKindExtensions.BingGrounding())
+    internal BingGroundingTool() : base(ResponseToolKind.BingGrounding())
     {
     }
 
