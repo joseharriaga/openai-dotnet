@@ -67,8 +67,9 @@ public partial class ResponsesExtensibilityTests
     {
         ResponseResult response = ModelReaderWriter.Read<ResponseResult>(ResponseWithFunctionAndBingGroundingTools);
 
-        FunctionTool functionTool = (FunctionTool)response.Tools[0];
+        FunctionTool functionTool = (FunctionTool)response.Tools[0].AsKnownAzureTool();
         ResponseTool bingGroundingResponseTool = response.Tools[1];
+        BingGroundingTool bingGroundingTool = (BingGroundingTool)bingGroundingResponseTool.AsKnownAzureTool();
 
         using JsonDocument parameters = JsonDocument.Parse(functionTool.FunctionParameters.ToString());
         JsonElement root = parameters.RootElement;
@@ -86,10 +87,6 @@ public partial class ResponsesExtensibilityTests
             Assert.That(bingGroundingResponseTool.Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
         });
 
-        BingGroundingTool bingGroundingTool = ModelReaderWriter.Read<BingGroundingTool>(
-            bingGroundingResponseTool.Patch.GetJson("$."u8),
-            ModelSerializationExtensions.WireOptions,
-            AzureAIExtensionsOpenAIContext.Default);
         Assert.That(bingGroundingTool.BingGroundingOptions.SearchConfigurations, Has.Count.EqualTo(1));
         BingGroundingSearchConfiguration searchConfiguration = bingGroundingTool.BingGroundingOptions.SearchConfigurations[0];
 
@@ -104,7 +101,9 @@ public partial class ResponsesExtensibilityTests
             Assert.That(searchConfiguration.Market, Is.EqualTo("en-US"));
             Assert.That(searchConfiguration.SetLang, Is.EqualTo("en"));
             Assert.That(searchConfiguration.Freshness, Is.EqualTo("7d"));
-            Assert.That(options.Tools[0], Is.SameAs(functionTool));
+            Assert.That(functionTool, Is.SameAs(response.Tools[0]));
+            Assert.That(bingGroundingTool, Is.Not.SameAs(bingGroundingResponseTool));
+            Assert.That(options.Tools[0], Is.SameAs(response.Tools[0]));
             Assert.That(options.Tools[1], Is.SameAs(bingGroundingTool));
             Assert.That(options.Tools[1].Kind, Is.EqualTo(ResponseToolKind.BingGrounding()));
         });
