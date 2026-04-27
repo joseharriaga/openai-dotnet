@@ -15,6 +15,7 @@ namespace Azure.AI.Extensions.OpenAI
     /// </summary>
     [ModelReaderWriterBuildable(typeof(BingGroundingSearchConfiguration))]
     [ModelReaderWriterBuildable(typeof(BingGroundingOptions))]
+    [ModelReaderWriterBuildable(typeof(BingGroundingTool))]
     [ModelReaderWriterBuildable(typeof(BingGroundingAzureTool))]
     [ModelReaderWriterBuildable(typeof(UnknownAzureResponsesTool))]
     [ModelReaderWriterBuildable(typeof(AzureResponsesTool))]
