@@ -67,7 +67,8 @@ public partial class ResponsesExtensibilityTests
     {
         ResponseResult response = ModelReaderWriter.Read<ResponseResult>(ResponseWithFunctionAndBingGroundingTools);
 
-        FunctionTool functionTool = (FunctionTool)response.Tools[0].AsKnownAzureTool();
+        ResponseTool knownFunctionTool = response.Tools[0].AsKnownAzureTool();
+        FunctionTool functionTool = (FunctionTool)knownFunctionTool;
         ResponseTool bingGroundingResponseTool = response.Tools[1];
         BingGroundingTool bingGroundingTool = (BingGroundingTool)bingGroundingResponseTool.AsKnownAzureTool();
 
@@ -101,7 +102,7 @@ public partial class ResponsesExtensibilityTests
             Assert.That(searchConfiguration.Market, Is.EqualTo("en-US"));
             Assert.That(searchConfiguration.SetLang, Is.EqualTo("en"));
             Assert.That(searchConfiguration.Freshness, Is.EqualTo("7d"));
-            Assert.That(functionTool, Is.SameAs(response.Tools[0]));
+            Assert.That(knownFunctionTool, Is.SameAs(response.Tools[0]));
             Assert.That(bingGroundingTool, Is.Not.SameAs(bingGroundingResponseTool));
             Assert.That(options.Tools[0], Is.SameAs(response.Tools[0]));
             Assert.That(options.Tools[1], Is.SameAs(bingGroundingTool));
